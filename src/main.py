@@ -15,7 +15,7 @@ dict_relevant_links = {}
 number_of_relevant_links = 0
 
 # Get all the links from the webpage 
-html_page = urlopen("http://www.fortuneindia.com/fortune-500/company-list/reliance-industries?year=2017")
+html_page = urlopen("https://www.fortuneindia.com/fortune-500/company-list/indian-oil-corporation?year=2017")
 soup = BeautifulSoup(html_page, "html5lib")
  
 for link in soup.findAll('a', attrs={'href': re.compile("^http://")}):
@@ -64,15 +64,30 @@ employee_cost = 0; employee_cost_change = 0
 for key, value in dict_relevant_links.items():
 	rank = rank + 1
 	company_name = key
+	temp_list = []
 
 	html_page = urlopen(value)
 	soup = BeautifulSoup(html_page, "html5lib")
 
 	for row in soup('table')[0].findAll('tr'):
 		tds = row('td')
-		print (tds)
-		
-	exit(0)
+
+		# ignore the first row, contains the "Parameters, Rs. Crore and % Change"
+		# print(row())
+
+		temp_list.append(tds[1].text)
+		temp_list.append(tds[2].text)
+
+	
+	temp_list[0] = rank
+	temp_list[1] = company_name
+	print(temp_list)
+	csv_fortune_writer.writerow([temp_list[0], temp_list[1], temp_list[2], temp_list[3], temp_list[4], temp_list[5], temp_list[6], temp_list[7],
+								temp_list[8], temp_list[9], temp_list[10], temp_list[11], temp_list[12], temp_list[13], temp_list[14], temp_list[15]])
+	# exit(0)
+	# csv_fortune_writer.writerow([rank, company_name, revenue, revenue_change, net_operating_income, net_operating_income_change,
+	# 	profit, profit_change, assets, assets_change, net_worth, net_worth_change, equity_dividend, equity_dividend_change, 
+	# 	employee_cost, employee_cost_change])
 
 
 
