@@ -17,15 +17,16 @@ number_of_relevant_links = 0
 # Get all the links from the webpage 
 html_page = urlopen("https://www.fortuneindia.com/fortune-500/company-list/indian-oil-corporation?year=2017")
 soup = BeautifulSoup(html_page, "html5lib")
- 
-for link in soup.findAll('a', attrs={'href': re.compile("^http://")}):
+# print(soup) 
+for link in soup.findAll('a', attrs={'href': re.compile("^https://")}):
     all_links.append(link.get('href'))
     # print(link.get('href'))
     # print(link.getText())
     dict_all_links[link.getText().strip()] = link.get('href')
     
-
+# print(dict_all_links)
 number_of_links = len(dict_all_links)
+# print(number_of_links)
 
 
 # if any link contains the main_url, puch it to the relevant links list.
@@ -33,6 +34,7 @@ main_url = "www.fortuneindia.com/fortune-500/company-list/"
 
 for key, value in dict_all_links.items():
 	if main_url in value:
+		# print(key, value)
 		dict_relevant_links[key] = value
 
 # Update a CSV file
@@ -62,6 +64,7 @@ equity_dividend = 0; equity_dividend_change = 0
 employee_cost = 0; employee_cost_change = 0
 
 for key, value in dict_relevant_links.items():
+	# print(key)
 	rank = rank + 1
 	company_name = key
 	temp_list = []
